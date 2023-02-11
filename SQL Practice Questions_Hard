@@ -1,0 +1,58 @@
+Question: ID 10171
+Difficulty: Hard
+
+Postgresql SQL Dialect
+
+Question: 
+Find the genre of the person with the most number of oscar winnings.
+If there are more than one person with the same number of oscar wins, 
+return the first one in alphabetic order based on their name. Use the names as keys when joining the tables.
+
+Table1: oscar_nominees
+---------------------------
+year:       | int
+category:   | varchar
+nominee:    | varchar
+movie:      | varchar
+winner:     | bool
+id:         | int
+---------------------------
+
+Table2: nominee_information
+---------------------------
+name:            |varchar
+amg_person_id:   |varchar
+top_genre:       |varchar
+birthday:        |datetime
+id:              |int
+-----------------------------
+
+
+Query:
+
+with winner as(
+select 
+nominee,
+count(*) as wins
+from oscar_nominees
+where winner = TRUE
+group by 1
+order by 2 desc,1 asc),
+oscar_rank as(
+select
+*,
+rank() over(order by wins desc, nominee asc) as ranking
+from winner)
+select
+i.top_genre
+from nominee_information as i 
+inner join oscar_rank as r 
+on i.name = r.nominee
+where r.ranking = 1;
+
+Results:
+Drama
+
+------------------------------------------------------------------------------------------------------
+
+
