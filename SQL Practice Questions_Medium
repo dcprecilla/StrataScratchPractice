@@ -1,0 +1,95 @@
+Question ID: ID 10351
+Difficulty: Medium
+
+Question: 
+Find the email activity rank for each user. Email activity rank is defined by the total number of emails sent. The user with the highest number of emails sent will have a rank of 1, and so on. Output the user, total emails, and their activity rank. Order records by the total emails in descending order. Sort users with the same number of emails in alphabetical order.
+In your rankings, return a unique value (i.e., a unique rank) even if multiple users have the same number of emails.
+
+Table: google_gmail_emails
+column_name | data type
+id:           int
+from_user:    varchar
+to_user:      varchar
+day:          int
+
+Query:
+select 
+from_user,
+count(*) as total_emails,
+row_number() over(order by count(*) desc, from_user) as row_n 
+from google_gmail_emails
+group by 1
+;
+
+----------------------------------------------------------------------------------------------------------------------------------
+Question ID: ID 10315
+
+Question: Write a query that identifies cities with higher than average home prices when compared to the national average. Output the city names.
+
+Table: zillow_transactions
+column_name   | data type
+id:               int
+state:            varchar
+city:             varchar
+street_address:   varchar
+mkt_price:        int
+
+Query: 
+Select 
+city
+from zillow_transactions
+group by 1
+having avg(mkt_price) > (Select avg(mkt_price) from zillow_transactions);
+
+Results: 
+city
+Mountain View
+Santa Clara
+San Francisco
+
+-------------------------------------------------------------------------------------------------------------------------------------
+Question ID: ID 10301
+
+Question: Given a list of projects and employees mapped to each project, calculate by the amount of project budget allocated to each employee . 
+The output should include the project title and the project budget rounded to the closest integer. Order your list by projects with 
+the highest budget per employee first.
+
+Table1: ms_projects
+column   | data type
+id:         int
+title:      varchar
+budget:     int
+
+Table2: ms_emp_projects
+column     | data type
+emp_id:       int
+project_id:   int
+
+Query:
+
+with base as(
+select
+p.*,
+e.emp_id
+from ms_projects as p
+join ms_emp_projects as e   
+on p.id = e.project_id)
+select
+title,
+round((budget/count(emp_id)::float)::numeric,0) as ratio 
+from base
+group by 1, budget
+order by 2 desc;
+
+Results: **First 5 rows only**
+tite      | ratio
+Project8	  24642
+Project49	  24387
+Project15 	24058
+Project10	  23794
+Project19	  22493
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
