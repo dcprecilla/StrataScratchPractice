@@ -21,6 +21,7 @@ from google_gmail_emails
 group by 1
 ;
 
+
 ----------------------------------------------------------------------------------------------------------------------------------
 /*Question ID: ID 10315
 
@@ -41,14 +42,14 @@ from zillow_transactions
 group by 1
 having avg(mkt_price) > (Select avg(mkt_price) from zillow_transactions);
 
-Results: 
+/*Results: 
 city
 Mountain View
 Santa Clara
-San Francisco
+San Francisco*/
 
 -------------------------------------------------------------------------------------------------------------------------------------
-Question ID: ID 10301
+/*Question ID: ID 10301
 
 Question: Given a list of projects and employees mapped to each project, calculate by the amount of project budget allocated to each employee . 
 The output should include the project title and the project budget rounded to the closest integer. Order your list by projects with 
@@ -65,7 +66,7 @@ column     | data type
 emp_id:       int
 project_id:   int
 
-Query:
+Query:*/
 
 with base as(
 select
@@ -81,17 +82,17 @@ from base
 group by 1, budget
 order by 2 desc;
 
-Results: **First 5 rows only**
+/*Results: **First 5 rows only**
 tite      | ratio
 Project8	  24642
 Project49	  24387
 Project15 	24058
 Project10	  23794
-Project19	  22493
+Project19	  22493*/
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
-Question ID: ID 10030
+/*Question ID: ID 10030
 
 Question: You have a dataset of wines. Find the total revenue made by each winery and variety that has at least 90 points. Each wine in the winery, variety pair should be at least 90 points in order for that pair to be considered in the calculation.
 Output the winery and variety along with the corresponding total revenue. Order records by the winery in ascending order and total revenue in descending order.
@@ -109,7 +110,7 @@ region_2: varchar
 variety: varchar
 winery: varchar
 
-Query:
+Query:*/
 
 select winery,
 variety,
@@ -120,7 +121,7 @@ having min(points) >= 90
 order by 1 asc, 3 desc
  ;
  
- * Please note that the results of this query is long and I only included the first 5 records
+ /* Please note that the results of this query is long and I only included the first 5 records
  
  Results:
  winery   	        variety	                total_revenue
@@ -128,10 +129,10 @@ Aveleda	            Alvarinho	                 13
 Bollig-Lehnert	    Riesling	                 27
 Boudreaux Cellars	  Cabernet Sauvignon	      100
 Ca' du RabajaŠ	     Nebbiolo	                24
-Chateau Souverain    Cabernet Sauvignon     	35
+Chateau Souverain    Cabernet Sauvignon     	35*/
 
 ----------------------------------------------------------------------------------------------------------------------------------
-Question ID: ID 10053
+/*Question ID: ID 10053
 
 Question:
 Find the top 5 businesses with the most check-ins.
@@ -144,20 +145,20 @@ weekday: varchar
 hour: datetime
 checkins: int
 
-Query:
+Query:*/
 select
 * 
 from yelp_checkin
 order by checkins desc
 limit 5;
 
-Results: 
+/*Results: 
 business_id	              weekday	hour	checkins
 4k3RlMAMd46DZ_JyZU0lMg	     Sat	21:00	137
 TkEMlu88OZn9TKZyeY9CJg	      Mon	02:00	39
 4p6Wce7Ed707QS2-yQkvZw	      Sat	01:00	31
 Ehy00JWQixgoXzisVKhvag	      Wed	01:00	22
-ujgpePdD8Q-fP1mPFnw0Qw	      Tue	16:00	17
+ujgpePdD8Q-fP1mPFnw0Qw	      Tue	16:00	17*/
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
