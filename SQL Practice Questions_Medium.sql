@@ -1,4 +1,4 @@
-Question ID: ID 10351
+/*Question ID: ID 10351
 Difficulty: Medium
 
 Question: 
@@ -12,7 +12,7 @@ from_user:    varchar
 to_user:      varchar
 day:          int
 
-Query:
+Query:*/
 select 
 from_user,
 count(*) as total_emails,
@@ -22,7 +22,7 @@ group by 1
 ;
 
 ----------------------------------------------------------------------------------------------------------------------------------
-Question ID: ID 10315
+/*Question ID: ID 10315
 
 Question: Write a query that identifies cities with higher than average home prices when compared to the national average. Output the city names.
 
@@ -34,7 +34,7 @@ city:             varchar
 street_address:   varchar
 mkt_price:        int
 
-Query: 
+Query: */
 Select 
 city
 from zillow_transactions
