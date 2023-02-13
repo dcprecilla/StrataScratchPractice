@@ -161,6 +161,43 @@ Ehy00JWQixgoXzisVKhvag	      Wed	01:00	22
 ujgpePdD8Q-fP1mPFnw0Qw	      Tue	16:00	17*/
 
 ----------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10070
+
+Question: Find the winning teams of DeepMind employment competition.
+Output the team along with the average team score.
+Sort records by the team score in descending order.
+
+Table1: google_competition_participants
+
+member_id: int
+team_id: int
+
+Table2: google_competition_scores
+
+member_id: int
+member_score: float
+
+Query: */
+select 
+p.team_id as team_id,
+AVG(s.member_score) as team_score_sum
+from google_competition_participants as p 
+inner join google_competition_scores as s 
+on p.member_id = s.member_id
+group by 1
+order by 2 desc;
+
+/*Results:
+team_id	 team_score_sum
+9	       0.816
+4	       0.79
+14     	0.786
+15     	0.784
+10     	0.778
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
