@@ -198,6 +198,67 @@ team_id	 team_score_sum
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
+/* Question ID: ID 10089
+
+Question: Find the number of customers without an order.
+
+Table1: orders
+
+id:  int
+cust_id:   int
+order_date:  datetime
+order_details: varchar
+total_order_cost:  int
+
+Table2: customers
+id: int
+first_name: varchar
+last_name:  varchar
+city: varchar
+address: varchar
+phone_number: varchar
+
+Query: */
+
+select
+count(id)
+from customers
+where id NOT IN (select cust_id
+from orders
+where customers.id = orders.cust_id)
+
+/* Results:
+9
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 9876
+Question: Find the top two hotels with the most negative reviews.
+Output the hotel name along with the corresponding number of negative reviews.
+Sort records based on the number of negative reviews in descending order.*/
+
+with negatives as(
+select
+hotel_name,
+count(negative_review) as negative_revs,
+rank() over(order by count(negative_review) desc) as rankings
+from hotel_reviews
+where negative_review <> 'No Negative'
+group by 1
+order by 2 desc)
+select
+hotel_name,
+negative_revs
+from negatives
+where rankings <= 2;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
