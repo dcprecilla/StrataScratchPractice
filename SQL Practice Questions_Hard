@@ -1,4 +1,4 @@
-Question: ID 10171
+/*Question: ID 10171
 Difficulty: Hard
 
 Postgresql SQL Dialect
@@ -28,7 +28,7 @@ id:              |int
 -----------------------------
 
 
-Query:
+Query:*/
 
 with winner as(
 select 
@@ -50,9 +50,55 @@ inner join oscar_rank as r
 on i.name = r.nominee
 where r.ranking = 1;
 
-Results:
+/*Results:
 Drama
+*/
+------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10145
+
+Question: Make a pivot table to find the highest payment in each year for each employee.
+Find payment details for 2011, 2012, 2013, and 2014.
+Output payment details along with the corresponding employee name.
+Order records by the employee name in ascending order
+
+Table1: sf_public_salaries
+
+id:   int
+employeename:   varchar
+jobtitle:   varchar
+basepay:    float
+overtimepay:    float
+otherpay:   float
+benefits:   float
+totalpay:   float
+totalpaybenefits:   float
+year:   int
+notes:  datetime
+agency: varchar
+status: varchar
+
+Query: */
+
+select 
+employeename,
+MAX(CASE WHEN year = 2011 then totalpay else 0 end) as pay_2011,
+MAX(CASE WHEN year = 2012 then totalpay else 0 end) as pay_2012,
+MAX(CASE WHEN year = 2013 then totalpay else 0 end) as pay_2013,
+MAX(CASE WHEN year = 2014 then totalpay else 0 end) as pay_2014
+from sf_public_salaries
+group by 1
+order by 1 asc;
+
+/*Results:
+employeename	    pay_2011	pay_2012	pay_2013	pay_2014
+Aaron Schmidt	      0	        91903.92	  0	        0
+Adina M Diamond 	  0	          0	        0	    58496.19
+Alan K Tolbert	    0 	        0	        0	    2070.29
+Alexander M Lamond	0	          0	        0	    106319.44
+Alicia Brown	      0	          2386.55	  0 	      0
+*/
 
 ------------------------------------------------------------------------------------------------------
+
 
 
