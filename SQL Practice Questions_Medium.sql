@@ -253,6 +253,34 @@ from negatives
 where rankings <= 2;
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 10008
+
+Question: Find the sum of numbers whose index is less than 5 and the sum of numbers whose index is greater than 5. Output each result on a separate row.
+
+Table: transportation_numbers
+
+index: int
+number: int
+
+Query: */
+
+select 
+sum(case when index < 5 then number else 0 end) as num 
+from transportation_numbers
+UNION ALL
+select
+sum(case when index > 5 then number else 0 end) as num 
+from transportation_numbers;
+
+/* Results: 
+num
+16
+16
+*/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
