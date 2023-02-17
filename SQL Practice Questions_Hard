@@ -99,6 +99,33 @@ Alicia Brown	      0	          2386.55	  0 	      0
 */
 
 ------------------------------------------------------------------------------------------------------
+/*Question ID: ID 9855
 
+Question: Find the 5th highest salary without using TOP or LIMIT.
+
+Table: worker
+worker_id: int
+first_name: varchar
+last_name: varchar
+salary: int
+joining_date: datetime
+department: varchar
+
+Query: */
+with ranks as(
+select 
+worker_id,
+salary,
+rank() over(order by salary desc) as ranking 
+from worker)
+select
+salary 
+from ranks 
+where ranking = 5
+
+/*Results:
+100000
+*/
+------------------------------------------------------------------------------------------------------
 
 
