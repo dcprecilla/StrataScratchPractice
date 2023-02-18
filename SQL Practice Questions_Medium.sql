@@ -280,7 +280,36 @@ num
 */
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 2000
 
+Question: Write a query that returns binary description of rate type per loan_id. 
+The results should have one row per loan_id and two columns: for fixed and variable type.
+
+Table: submissions
+
+   id	balance	interest_rate	rate_type	loan_id
+   1	 5229.12	 8.75	variable	2
+   2	 12727.52	 11.37	fixed	4
+   3	 14996.58	 8.25	fixed	9
+   4	 21149	    4.75	variable	7
+   5 	14379	    3.75	variable	5
+   
+Query:
+*/
+select 
+loan_id,
+case when rate_type = 'fixed' then 1 else 0 end as fixed,
+case when rate_type = 'variable' then 1 else 0 end as variable 
+from submissions;
+
+/*Results:
+loan_id	 fixed	variable
+2        	0	     1
+4	        1	     0
+9	        1	     0
+7	        0	     1
+5        	0	     1
+*/
 
 
 
