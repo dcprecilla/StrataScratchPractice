@@ -310,6 +310,53 @@ loan_id	 fixed	variable
 7	        0	     1
 5        	0	     1
 */
+------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2001
+
+Question: Write a query that returns the rate_type, loan_id, loan balance , and a column that shows with what percentage 
+the loan's balance contributes to the total balance among the loans of the same rate type.
+
+Table: submissions
+id: int
+balance: float
+interest_rate: float
+rate_type: varchar
+loan_id: int
+
+Query: */
+
+select
+loan_id,
+rate_type,
+balance,
+balance/(Select SUM(balance) 
+from submissions 
+where rate_type = 'fixed') * 100.0 as balance_share
+from submissions
+where rate_type = 'fixed'
+UNION ALL
+select
+loan_id,
+rate_type,
+balance,
+balance/(Select SUM(balance) 
+from submissions 
+where rate_type = 'variable') * 100.0 as balance_share
+from submissions
+where rate_type = 'variable';
+/*
+Results: 
+loan_id	    rate_type	balance	  balance_share
+4	           fixed	    12727.52	  45.908
+9	           fixed	    14996.58	  54.092
+2	           variable	 5229.12	   11.131
+7	           variable	 21149	     45.019
+5	           variable	  14379	    30.608
+
+
+
+
 
 
 
