@@ -354,6 +354,60 @@ loan_id	    rate_type	balance	  balance_share
 7	           variable	 21149	     45.019
 5	           variable	  14379	    30.608
 
+------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2019
+
+Question: 
+Return the top 2 users in each company that called the most. Output the company_id, user_id, and the user's rank. 
+If there are multiple users in the same rank, keep all of them.
+
+Table: rc_calls
+
+user_id: int
+date: datetime
+call_id: int
+
+Table: rc_users
+user_id: int
+status: varchar
+company_id: int
+
+Query: */
+with call_logs as(
+select
+u.company_id as company_id,
+c.user_id as user_id,
+count(c.call_id) as calls
+from rc_calls as c
+inner join rc_users as u 
+on c.user_id = u.user_id
+group by 1,2),
+ranks as(
+select
+company_id,
+user_id,
+dense_rank() over(partition by company_id
+        order by calls desc) as ranking
+from call_logs)
+select
+*
+from ranks
+where ranking <= 2;
+
+/*Results:
+company_id	user_id	ranking
+     1	     1859	     1
+     1	     1854	     2
+     1	     1525	     2
+     2	     1891	     1
+     2	     1181	     1
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
