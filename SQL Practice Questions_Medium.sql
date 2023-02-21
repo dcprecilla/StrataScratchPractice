@@ -404,6 +404,48 @@ company_id	user_id	ranking
      2	     1181	     1
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2092
+
+Question: For each day, find the top 3 merchants with the highest number of orders on that day. 
+In case of a tie, multiple merchants can share the same place but on each day, there should always be at least 1 merchant on the first, second and third place.
+Output the date, the name of the merchant and their place in the daily ranking.
+
+Note: I will not be displaying the tables, because there's too many entries on it but I will display the table namess.
+
+Tables: oordash_orders, doordash_merchants
+
+Query: */
+with order_dates as(
+select 
+o.order_timestamp::date as order_date,
+m.name as name,
+count(o.id) as order_count
+from doordash_orders as o 
+inner join doordash_merchants as m 
+on o.merchant_id = m.id
+group by 1,2),
+date_ranks as(
+select
+order_date,
+name,
+dense_rank() over(partition by order_date
+order by order_count desc) as ranking
+from order_dates)
+select
+*
+from date_ranks
+where ranking <= 3;
+
+/*Results:
+order_date	  name	         ranking
+2022-01-14	 Thai Lion	        1
+2022-01-14	 Sushi Bay	        2
+2022-01-14	 Treehouse Pizza	  3
+2022-01-15 	Thai Lion	        1
+2022-01-15	 Meal Raven	       1
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
