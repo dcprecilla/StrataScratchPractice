@@ -446,6 +446,33 @@ order_date	  name	         ranking
 2022-01-15	 Meal Raven	       1
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 10039
+
+Question: Find the vintage years of all wines from the country of Macedonia. The year can be found in the 'title' column. 
+Output the wine (i.e., the 'title') along with the year. The year should be a numeric or int data type.
+
+Table: winemag_p2
+
+Query: */
+select
+title,
+TRIM(regexp_replace(title, '[[:alpha:],(),'''',-]', '','g')) as year
+from winemag_p2
+where lower(country) = 'macedonia';
+
+/*Results
+
+Title	                                  year
+Macedon 2010 Pinot Noir (Tikves)	      2010
+Stobi 2011 Macedon Pinot Noir (Tikves)	2011
+Stobi 2011 Veritas Vranec (Tikves)	    2011
+Bovin 2008 Chardonnay (Tikves)	        2008
+Stobi 2014 uilavka (Tikves)	            2014
+*/
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
