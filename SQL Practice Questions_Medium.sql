@@ -472,6 +472,43 @@ Stobi 2014 uilavka (Tikves)	            2014
 */
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 9607
+
+Question: Find the most expensive products on Amazon for each product category. Output category, product name and the price (as a number)
+
+Tables:  innerwear_amazon_com
+
+Query: */
+With products as(
+select
+product_category,
+product_name,
+replace(price,'$',''):: float as new_price 
+from innerwear_amazon_com),
+prices as(
+select
+product_category,
+MAX(new_price) as max_price
+from products
+group by 1)
+select
+prices.product_category,
+products.product_name,
+prices.max_price
+from products, prices
+where products.product_category = prices.product_category
+and products.new_price = prices.max_price;
+
+/*Results:
+product_category	   product_name	                                 max_price
+Bras	                Wacoal Women's Retro Chic Underwire Bra	      69.99
+Panties	             Calvin Klein Women's Ombre 5 Pack Thong	      59.99
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
