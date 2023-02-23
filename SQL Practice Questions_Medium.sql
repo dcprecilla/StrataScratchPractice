@@ -505,6 +505,46 @@ Bras	                Wacoal Women's Retro Chic Underwire Bra	      69.99
 Panties	             Calvin Klein Women's Ombre 5 Pack Thong	      59.99
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/* 
+Question ID: ID 2096
+
+Question: Find the number of actions that ClassPass workers did for tasks completed in January 2022. The completed tasks are these rows in 
+the asana_actions table with 'action_name' equal to CompleteTask. Note that each row in the dataset indicates how many actions of a certain 
+type one user has performed in one day and the number of actions is stored in the 'num_actions' column.
+Output the ID of the user and a total number of actions they performed for tasks they completed.
+If a user from this company did not complete any tasks in the given period of time, you should still output their ID and the number 0 in the second column.
+
+Tables: asana_users, asana_actions
+
+Query: */
+with classpass as(
+select *
+from asana_users
+where company = 'ClassPass'),
+actions as(
+select
+user_id,
+sum(num_actions) as n_actions
+from asana_actions
+where extract(year from date) = 2022
+and extract(month from date) = 01
+and action_name = 'CompleteTask'
+group by 1)
+select
+c.user_id,
+coalesce(a.n_actions,0)
+from classpass as c 
+left join actions a 
+on c.user_id = a.user_id;
+
+/*Results:
+user_id	 coalesce
+161	      23
+163      	0
+164	      35
+*/
+
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
