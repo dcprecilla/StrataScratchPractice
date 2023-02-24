@@ -545,7 +545,26 @@ user_id	 coalesce
 */
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 9789
 
+Question:
+Find the total number of approved friendship requests in January and February.
+
+Table:  facebook_friendship_requests
+
+Query: */
+
+select 
+count(date_approved) as num_approved
+from facebook_friendship_requests
+where date_approved is not null
+and extract(month from date_approved) in (1,2);
+
+/* Results:
+3
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
