@@ -565,7 +565,41 @@ and extract(month from date_approved) in (1,2);
 3
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 2104
 
+Question: Which user flagged the most distinct videos that ended up approved by YouTube? Output, in one column, their 
+full name or names in case of a tie. In the user's full name, include a space between the first and the last name.
+
+Tables: user_flags, flag_review
+
+Query: */
+with users as(
+select 
+CONCAT(user_firstname,' ',user_lastname) as username,
+count(distinct video_id) as flags
+from user_flags as f
+join (
+select
+*
+from 
+flag_review
+where reviewed_by_yt = true
+and reviewed_outcome = 'APPROVED') as av 
+on f.flag_id = av.flag_id
+where user_firstname is not null 
+and user_lastname is not null
+group by 1
+having count(distinct video_id) > 1
+order by 2)
+select username
+from users;
+
+/*Results:
+username
+Mark May
+Richard Hasson
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
