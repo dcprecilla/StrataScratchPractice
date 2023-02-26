@@ -600,7 +600,29 @@ Mark May
 Richard Hasson
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/* Question ID: ID 10161
+Question:Rank each host based on the number of beds they have listed. The host with the most beds should be ranked 1 and the host with the least number of beds should be ranked last. Hosts that have the same number of beds should have the same rank but there should be no gaps between ranking values. A host can also own multiple properties.
+Output the host ID, number of beds, and rank from highest rank to lowest.
 
+Tables: airbnb_apartments
+
+Query: */
+select 
+host_id,
+SUM(n_beds) as beds,
+dense_rank() over(order by sum(n_beds) desc) as ranking
+from airbnb_apartments
+group by 1;
+
+/*Results:
+host_id	beds	ranking
+10      	16	  1
+3       	8	   2
+6       	6	   3
+5	       5	   4
+7	       4	   5*/
+
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
