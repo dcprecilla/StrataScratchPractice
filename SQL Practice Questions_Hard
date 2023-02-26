@@ -127,5 +127,41 @@ where ranking = 5
 100000
 */
 ------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10017
+Question: Find how the number of drivers that have churned changed in each year compared to the previous one. 
+Output the year (specifically, you can use the year the driver left Lyft) along with the corresponding number of churns in that year, 
+the number of churns in the previous year, and an indication on whether the number has been increased (output the value 'increase'), 
+decreased (output the value 'decrease') or stayed the same (output the value 'no change').
 
+Tables: lyft_drivers
+
+Query: */
+with churners as(
+select 
+extract(year from end_date) as year_driver_churned,
+count(*) churned
+from lyft_drivers
+where end_date is not null
+group by 1),
+lags as(
+select
+year_driver_churned,
+churned,
+COALESCE(LAG(churned) over(order by year_driver_churned),0) as prev_churn_count 
+from churners)
+select
+*,
+CASE WHEN churned > prev_churn_count THEN 'increase'
+    WHEN churned < prev_churn_count THEN 'decrease'
+    ELSE 'no change'
+    END as comments
+from lags;
+
+/*Results:
+year_driver_churned	        churned	          prev_churn_count	      comments
+2015	                        5	                   0	                increase
+2016	                        5	                  5                 	no change
+2017	                        8                  	5	                  increase
+2018	                        25	                8	                  increase
+2019                      	    7	                 25	               decrease
 
