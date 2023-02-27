@@ -165,3 +165,27 @@ year_driver_churned	        churned	          prev_churn_count	      comments
 2018	                        25	                8	                  increase
 2019                      	    7	                 25	               decrease
 
+------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10013
+Question: Find the advertising channel with the smallest maximum yearly spending that still brings in more than 1500 customers each year.
+
+Table: uber_advertising
+
+Query: */
+with ads as(
+select
+advertising_channel,
+SUM(money_spent) as total_money
+from uber_advertising
+group by 1
+HAVING MIN(customers_acquired) >= 1500
+ORDER BY 2 asc
+LIMIT 1)
+select
+advertising_channel
+from ads;
+
+/*Results:
+advertising_channel
+tv
+*/
