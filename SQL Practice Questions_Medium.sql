@@ -623,8 +623,33 @@ host_id	beds	ranking
 7	       4	   5*/
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10083
+Question: Find contract starting dates of the top 5 most paid Lyft drivers. Consider drivers who are still working with Lyft.
 
+Table: lyft_drivers
 
+Query: */
+with dates as(
+select 
+*,
+rank() over(order by yearly_salary desc) as payments
+from lyft_drivers
+where end_date is null
+)
+select
+start_date
+from dates
+where payments <= 5;
+
+/*Results:
+start_date
+2017-04-08
+2018-11-04
+2018-06-09
+2018-07-22
+2017-05-07
+*/
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
