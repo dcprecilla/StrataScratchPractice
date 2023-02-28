@@ -189,3 +189,35 @@ from ads;
 advertising_channel
 tv
 */
+------------------------------------------------------------------------------------------------------
+/*Question ID: ID 9983
+Question:Find the median total pay for each job. Output the job title and the corresponding total pay, and sort the results from highest total pay to lowest.
+
+Table: sf_public_salaries
+
+Query:*/
+select 
+jobtitle,
+percentile_cont(0.5) WITHIN GROUP(ORDER BY totalpay) as median_salary
+from sf_public_salaries
+group by 1
+order by 2 desc;
+
+/*Results: 
+jobtitle	                                        median_salary
+GENERAL MANAGER-METROPOLITAN TRANSIT AUTHORITY	       399211.275
+CAPTAIN III (POLICE DEPARTMENT)                     	196494.14
+SENIOR PHYSICIAN SPECIALIST	                            178760.58
+
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
