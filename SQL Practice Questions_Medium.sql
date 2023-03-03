@@ -650,6 +650,56 @@ start_date
 2017-05-07
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
+/* Question ID: ID 10152
+
+Question: You have been asked to find the employees with the highest and lowest salary.
+Your output should include the employee's ID, salary, and department, as well as a column salary_type that categorizes the output by:
+
+'Highest Salary' represents the highest salary
+
+'Lowest Salary' represents the lowest salary
+
+Tables: worker
+
+Query: */
+with ranking as(
+select 
+worker_id,
+salary,
+department,
+DENSE_RANK() OVER(ORDER BY salary DESC) as highest,
+DENSE_RANK() OVER(ORDER BY salary) as lowest
+from worker),
+salary_summary as(
+select
+worker_id,
+salary,
+department,
+CASE WHEN highest = 1 THEN 'Highest Salary' END as salary_type
+from ranking
+union 
+select
+worker_id,
+salary,
+department,
+CASE WHEN lowest = 1 THEN 'Lowest Salary' END as salary_type
+from ranking)
+select
+*
+from salary_summary
+where salary_type is not null
+order by salary DESC;
+
+
+/*Results:
+worker_id	salary	department	salary_type
+4	        500000	Admin	Highest Salary
+5	        500000	Admin	Highest Salary
+10	       65000	HR	Lowest Salary */
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 
