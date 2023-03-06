@@ -698,8 +698,39 @@ worker_id	salary	department	salary_type
 10	       65000	HR	Lowest Salary */
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 9899
+Question: Calculate the percentage of the total spend a customer spent on each order. 
+Output the customer’s first name, order details, and percentage of the order cost to their total spend across all orders.
 
+Assume each customer has a unique first name (i.e., there is only 1 customer named Karen in the dataset) and that customers place at most only 1 order a day.
+Percentages should be represented as decimals
 
+Tables: customers, orders
+
+Query: */
+with cust_order as(
+select 
+c.first_name,
+o.order_details,
+o.total_order_cost
+from orders as o
+join customers as c
+on o.cust_id = c.id)
+select
+first_name,
+order_details,
+total_order_cost/SUM(total_order_cost) OVER(PARTITION BY first_name)::numeric as percentage
+from cust_order;
+
+/*Results:
+first_name	order_details	percentage
+Eva	Coat	0.61
+Eva	Slipper	0.098
+Eva	Shirts	0.293
+Farida	Coat	0.385
+*/
+
+------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
