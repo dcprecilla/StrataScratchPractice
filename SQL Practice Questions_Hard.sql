@@ -210,8 +210,38 @@ CAPTAIN III (POLICE DEPARTMENT)                     	196494.14
 SENIOR PHYSICIAN SPECIALIST	                            178760.58
 
 ------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2036
+Question: Write a query that returns a list of the bottom 2% revenue generating restaurants. Return a list of restaurant IDs and their total revenue from when customers placed orders in May 2020.
+You can calculate the total revenue by summing the order_total column. And you should calculate the bottom 2% by partitioning the total revenue into evenly distributed buckets.
 
+Table: doordash_delivery
 
+Query: */
+with orders as(
+select 
+restaurant_id,
+sum(order_total) as total
+from doordash_delivery
+group by 1
+order by 2),
+ranks as(
+select
+*,
+cume_dist() over(order by total)
+from orders)
+select
+restaurant_id,
+total
+from ranks
+where cume_dist < 0.03;
+
+/* Results:
+restaurant_id	total
+90	            14.16
+26	            14.65
+*/
+------------------------------------------------------------------------------------------------------
 
 
 
