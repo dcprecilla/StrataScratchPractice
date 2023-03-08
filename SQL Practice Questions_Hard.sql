@@ -242,6 +242,29 @@ restaurant_id	total
 26	            14.65
 */
 ------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2037
+Question: Check if there is a correlation between average total order value and average time in minutes between placing the order and delivering the order per restaurant.
+
+
+Tables: doordash_delivery
+
+Query: */
+with avg_time as(
+select 
+AVG(EXTRACT(epoch from delivered_to_consumer_datetime) - EXTRACT(epoch from customer_placed_order_datetime))::float/60 as avg_time_mins,
+avg(order_total) as avg_total
+from doordash_delivery
+group by restaurant_id)
+select
+corr(avg_time_mins,avg_total)
+from avg_time;
+
+/* Results:
+corr
+0.859 */
+
+------------------------------------------------------------------------------------------------------
 
 
 
