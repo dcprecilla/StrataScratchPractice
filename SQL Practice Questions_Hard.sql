@@ -265,7 +265,41 @@ corr
 0.859 */
 
 ------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 9716
+Question: Find the most profitable location. Write a query that calculates the average signup duration and average transaction 
+amount for each location, and then compare these two measures together by taking the ratio of the average transaction amount and average duration for each location.
+Your output should include the location, average duration, average transaction amount, and ratio. Sort your results from highest ratio to lowest.
 
+Tables: signups, transactions
+
+Query: 
+*/
+with main as(
+select 
+owner_name, 
+facility_address,
+avg(score),
+dense_rank() over(partition by owner_name
+                order by avg(score) desc, facility_address) as ranking
+from los_angeles_restaurant_health_inspections
+group by 1,2)
+select 
+owner_name,
+MAX(CASE WHEN ranking = 1 THEN facility_address END) as facility_1,
+MAX(CASE WHEN ranking = 2 THEN facility_address END) as facility_2,
+MAX(CASE WHEN ranking = 3 THEN facility_address END) as facility_3
+from main
+group by 1
+order by 1;
+
+/*Results: 
+location	        mean_duration	avg_amount	ratio
+Rio De Janeiro	           81.833	40.525	    0.495
+Mexico City	              123.667	47.627	    0.385
+Houston	                    83.25	22.567	    0.271
+*/
+------------------------------------------------------------------------------------------------------
 
 
 
