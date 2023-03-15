@@ -300,6 +300,47 @@ Mexico City	              123.667	47.627	    0.385
 Houston	                    83.25	22.567	    0.271
 */
 ------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 10172
+Question: Find the best selling item for each month (no need to separate months by year) where the biggest total invoice was paid.
+The best selling item is calculated using the formula (unitprice * quantity). Output the description of the item along with the amount paid.
+
+Tables:  online_retail
+
+Query: */
+with months as(
+select 
+date_trunc('month',invoicedate)::date as dates,
+description,
+quantity * unitprice as total_paid
+from online_retail),
+items as(
+select
+EXTRACT(month from dates) as months,
+description,
+sum(total_paid) as total_paid
+from months
+group by 1,2
+order by 1),
+ranking as(
+select
+*,
+dense_rank() over(partition by months
+            order by total_paid desc) as d_rank 
+from items)
+select 
+months,
+description,
+total_paid
+from ranking
+where d_rank = 1;
+/*
+Results:
+months	description                 	total_paid
+1	       LUNCH BAG SPACEBOY DESIGN	74.26
+2	       REGENCY CAKESTAND 3 TIER	    38.25
+3	       PAPER BUNTING WHITE LACE	    102
+------------------------------------------------------------------------------------------------------
 
 
 
