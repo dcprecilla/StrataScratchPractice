@@ -339,10 +339,44 @@ Results:
 months	description                 	total_paid
 1	       LUNCH BAG SPACEBOY DESIGN	74.26
 2	       REGENCY CAKESTAND 3 TIER	    38.25
-3	       PAPER BUNTING WHITE LACE	    102
+3	       PAPER BUNTING WHITE LACE	    102*/
 ------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 9739
+Question: For every year, find the worst business in the dataset. 
+The worst business has the most violations during the year. You should output the year, business name, and number of violations.
 
+Tables: sf_restaurant_health_violations
 
+Query: */
+with cte as(
+select 
+extract(year from inspection_date) as year, 
+business_name,
+count(violation_id) as violations 
+from sf_restaurant_health_violations
+group by 1,2
+order by 3 desc, 1 asc) 
+select
+s.year,
+cte.business_name,
+s.violations 
+from cte 
+join (select year, 
+MAX(violations) as violations
+from cte
+group by 1) as s 
+on cte.year = s.year 
+and cte.violations = s.violations
+order by 1;
+
+/*Results: 
+year	business_name	    violations
+2015	Roxanne Cafe	        5
+2016	Da Cafe	                4
+2017	Peet's Coffee & Tea	    2
+*/
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
