@@ -377,8 +377,41 @@ year	business_name	    violations
 2017	Peet's Coffee & Tea	    2
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 9637
+Question: Estimate the growth of Airbnb each year using the number of hosts registered as the growth metric. The rate of growth is calculated by taking ((number of hosts registered in the current year - number of hosts registered in the previous year) / the number of hosts registered in the previous year) * 100.
+Output the year, number of hosts in the current year, number of hosts in the previous year, and the rate of growth. Round the rate of growth to the nearest percent and order the result in the ascending order based on the year.
+Assume that the dataset consists only of unique hosts, meaning there are no duplicate hosts listed.
 
+Table: airbnb_search_details
+*/
+with hosts as(
+select 
+extract(year from host_since) as year_host, 
+count(*) as current_year
+from airbnb_search_details
+where host_since is not null
+group by 1),
+lags as(
+select 
+year_host, 
+current_year,
+LAG(current_year) over(order by year_host) as previous_year
+from hosts)
+select
+*,
+ROUND((current_year - previous_year)::numeric/previous_year * 100) as growth
+from lags
 
+/* Results:
+year_host	current_year	previous_year	growth
+2009	2		
+2010	4	2	100
+2011	9	4	125
+2012	10	9	11
+2013	30	10	200
+
+*/
 
 
 
