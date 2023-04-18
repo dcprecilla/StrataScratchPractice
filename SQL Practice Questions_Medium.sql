@@ -759,6 +759,42 @@ post_date	   spam_share
 2019-01-02	     50
 */
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 9700
+Question: Find the rules used to determine each grade. Show the rule in a separate column in the format of 'Score > X AND Score <= Y => Grade = A' where X and Y are 
+the lower and upper bounds for a grade. Output the corresponding grade and its highest and lowest scores along with the rule. Order the result based on the grade in ascending order.
+
+Tables:  los_angeles_restaurant_health_inspections
+
+Query: */
+with grade_score as(
+select 
+grade,
+MIN(score) as min_score,
+MAX(score) as max_score
+from los_angeles_restaurant_health_inspections
+group by 1)
+select 
+grade,
+min_score,
+max_score,
+CASE WHEN (min_score > 89 and max_score <= 100) THEN 'Score > 89 AND Score <= 100 => Grade = A'
+    WHEN (min_score > 79 and max_score <= 88) THEN 'Score > 79 AND Score <= 88 => Grade = B'
+    ELSE 'Score > 69 AND Score <= 79 => Grade = C' END as rule 
+    from grade_score
+    order by grade ;
+
+/*
+Results: 
+grade	min_score	max_score	rule
+A	90	100	Score > 89 AND Score <= 100 => Grade = A
+B	80	88	Score > 79 AND Score <= 88 => Grade = B
+C	70	79	Score > 69 AND Score <= 79 => Grade = C
+*/
+
+
+
+
 
 
 
