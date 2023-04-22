@@ -791,6 +791,32 @@ A	90	100	Score > 89 AND Score <= 100 => Grade = A
 B	80	88	Score > 79 AND Score <= 88 => Grade = B
 C	70	79	Score > 69 AND Score <= 79 => Grade = C
 */
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*Question ID: ID 10090
+Question: 
+Find the percentage of shipable orders.
+Consider an order is shipable if the customer's address is known.
+
+Tables: Orders, Customers
+
+Query: */
+with cust_orders as(
+select 
+count(id) as order_count,
+(Select count(o.id) from orders as o 
+join customers as c 
+on o.cust_id = c.id
+where c.address is not null) as address_cust
+from orders )
+select 
+address_cust/order_count::numeric * 100 as pct
+from cust_orders;
+
+/*Results:
+28
+*/
+
+
 
 
 
