@@ -815,6 +815,36 @@ from cust_orders;
 /*Results:
 28
 */
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2010
+Question: 
+List the top 10 users who accumulated the most sessions where they had more streaming sessions than viewing.
+Return the user_id, number of streaming sessions, and number of viewing sessions.
+
+Tables: twitch_sessions
+
+Query: */
+with views_stream as(
+select 
+user_id,
+SUM(CASE WHEN session_type = 'streamer' then 1 else 0 end) as streaming,
+SUM(CASE WHEN session_type = 'viewer' then 1 else 0  end) as viewer 
+from twitch_sessions
+group by 1)
+select 
+*
+from views_stream
+where streaming > viewer
+order by streaming
+limit 10;
+
+/* Results:
+user_id	 streaming	 viewer
+0	          2	        1
+*/
+
+
 
 
 
