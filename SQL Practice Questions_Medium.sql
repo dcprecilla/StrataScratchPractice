@@ -843,6 +843,73 @@ limit 10;
 user_id	 streaming	 viewer
 0	          2	        1
 */
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2015
+Question: What cities recorded the largest growth and biggest drop in order amount between March 11, 2019, and April 11, 2019. 
+Just compare order amounts on those two dates. Your output should include the names of the cities and the amount of growth/drop.
+
+tables:  postmates_orders, postmates_markets
+
+query: */
+with march_april as(
+select 
+m.name,
+SUM(case when order_timestamp_utc::date = '2019-03-11' then amount else 0 end) as march, 
+SUM(case when order_timestamp_utc::date = '2019-04-11' then amount else 0 end) as april
+from postmates_orders as o 
+join postmates_markets as m 
+on o.city_id = m.id
+group by 1),
+ranks as(
+select 
+name, 
+april - march::numeric as diff,
+dense_rank() over(order by april-march::numeric asc) as ranking
+from march_april)
+select 
+name, 
+diff
+from ranks
+where ranking = (select min(ranking) from ranks)
+or ranking = (select max(ranking) from ranks);
+
+/*
+results:
+name	diff
+Boston	-530.26
+Seattle	192.74
+*/
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
