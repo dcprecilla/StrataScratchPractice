@@ -881,6 +881,48 @@ Boston	-530.26
 Seattle	192.74
 */
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2155
+
+Question: Following a recent advertising campaign, the marketing department wishes to classify its efforts based on the total number of units sold for each product.
+You have been tasked with calculating the total number of units sold for each product and categorizing ad performance based on the following criteria for items sold:
+
+Outstanding: 30+
+Satisfactory: 20 - 29
+Unsatisfactory: 10 - 19
+Poor: 1 - 9
+
+Your output should contain the product ID, total units sold in descending order, and its categorized ad performance.
+
+Query: 
+*/
+with units as(
+select 
+product_id, 
+SUM(quantity) as sold 
+from marketing_campaign 
+group by 1)
+select 
+*, 
+CASE WHEN sold <= 9 THEN 'Poor'
+    WHEN sold >= 10 and sold <= 19 THEN 'Unsatisfactory'
+    WHEN sold >= 20 and sold <= 29 THEN 'Satisfactory'
+    ELSE 'Outstanding' END as perf
+from units 
+order by 2 desc;
+
+/*Results: 
+product_id	sold	perf
+105	41	Outstanding
+102	29	Satisfactory
+114	23	Satisfactory
+118	22	Satisfactory
+120	21	Satisfactory
+117	20	Satisfactory
+119	19	Unsatisfactory
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
