@@ -922,6 +922,36 @@ product_id	sold	perf
 119	19	Unsatisfactory
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+Question ID: ID 2117
+Question: What is the last name of the employee or employees who are responsible for the most orders?
+
+Tables: shopify_orders, shopify_employees
+Query: 
+*/
+with employee_purchases as(
+select 
+e.id, 
+e.first_name, 
+e.last_name,
+count(o.order_id) as orders,
+rank() over(order by count(o.order_id) desc) as ranking
+from shopify_orders as o 
+join shopify_employees as e on o.resp_employee_id = e.id
+group by 1,2,3)
+select 
+last_name
+from employee_purchases
+where ranking = 1;
+
+/*Results:
+last_name
+Holmes
+Wadsworth
+*/
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
