@@ -951,9 +951,35 @@ Wadsworth
 */
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+/* Question ID: ID 2152
+Question: It's time to find out who is the top employee. You've been tasked with finding the employee (or employees, in the case of a tie) who have received the most votes.
+A vote is recorded when a customer leaves their 10-digit phone number in the free text customer_response column of their sign up response (occurrence of any number sequence with exactly 10 digits is considered as a phone number)
+Output the top employee and the number of customer responses that left a number.
 
+Tables: customer_responses 
 
+Query:*/
+with top as(
+select 
+employee_id,
+SUM(CASE WHEN customer_response ~ '\d{10}' THEN 1 ELSE 0 end) as phone,
+rank() over(order by SUM(CASE WHEN customer_response ~ '\d{10}' THEN 1 ELSE 0 end) desc) as ranking
+from customer_responses
+group by 1
+)
+select 
+employee_id,
+phone
+from top
+where ranking = 1
 
+/* Results: 
+employee_id	phone
+1001	         3
+1006	         3
+
+*/
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
